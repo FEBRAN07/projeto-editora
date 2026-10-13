@@ -7,15 +7,18 @@ import org.springframework.stereotype.Service;
 
 import dw.editora.entity.Artigo;
 import dw.editora.repository.ArtigoRepository;
+import dw.editora.repository.AutorRepository;
 
 // @Service diz ao Spring que esta classe contém a lógica de negócio
 @Service
 public class ArtigoService {
 
     private final ArtigoRepository repository;
+    private final AutorRepository autorRepository;
 
-    public ArtigoService(ArtigoRepository repository) {
+    public ArtigoService(ArtigoRepository repository, AutorRepository autorRepository) {
         this.repository = repository;
+        this.autorRepository = autorRepository;
     }
 
     public List<Artigo> listarArtigos(String titulo) {
@@ -30,7 +33,11 @@ public class ArtigoService {
     }
 
     public Artigo salvar(Artigo artigo) {
-        // Regras de negócio, validações complexas ou envio de emails entrariam aqui
+        if (artigo.getAutor() == null || artigo.getAutor().getId() == null) {
+            throw new IllegalArgumentException("Informe o autor do artigo no formato: autor: { id: ID_DO_AUTOR }.");
+        }
+        artigo.setAutor(autorRepository.findById(artigo.getAutor().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Autor não encontrado. Cadastre o autor antes de criar o artigo.")));
         return repository.save(artigo);
     }
 

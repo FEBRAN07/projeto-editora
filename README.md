@@ -38,7 +38,7 @@ spring.jpa.hibernate.ddl-auto=update
 
 ## 📍 Endpoints da API
 
-A API responde no Base Path `/editora/api/artigos` e permite requisições Cross-Origin (CORS habilitado globalmente).
+A API de artigos responde em `http://localhost:8000/api/artigos` e permite requisições Cross-Origin.
 
 | Método HTTP | Endpoint | Descrição |
 | :--- | :--- | :--- |
@@ -50,6 +50,33 @@ A API responde no Base Path `/editora/api/artigos` e permite requisições Cross
 | `DELETE` | `/api/artigos/{id}` | Exclui um artigo específico pelo ID. |
 | `DELETE` | `/api/artigos` | Exclui **todos** os artigos do banco de dados. |
 
+### Criar um artigo no Postman
+
+Use Body → raw → JSON (`Content-Type: application/json`). Todo artigo precisa de um autor cadastrado.
+
+1. Envie `POST http://localhost:8000/api/autores`:
+
+   ```json
+   {
+     "nome": "Maria Silva",
+     "email": "maria@example.com",
+     "biografia": "Autora de artigos."
+   }
+   ```
+
+2. Copie o `id` retornado (ou consulte `GET /api/autores`) e envie `POST http://localhost:8000/api/artigos`, substituindo `1` pelo ID do autor:
+
+   ```json
+   {
+     "titulo": "Meu primeiro artigo",
+     "resumo": "Um resumo qualquer",
+     "publicado": true,
+     "autor": { "id": 1 }
+   }
+   ```
+
+O retorno esperado é **201 Created**. Se o autor estiver ausente, sem ID ou não existir, a API retorna **400 Bad Request** com uma mensagem no campo `erro`. Erros inesperados de criação são registrados no console da aplicação.
+
 ## 💻 Como Executar o Projeto Localmente
 
 1.  Certifique-se de ter o **Java 17** e o **Maven** instalados em sua máquina.
@@ -60,4 +87,4 @@ A API responde no Base Path `/editora/api/artigos` e permite requisições Cross
     ```bash
     mvn spring-boot:run
     ```
-6. A API estará pronta para receber requisições em: `http://localhost:8000/editora/api/artigos`
+6. A API estará pronta para receber requisições em: `http://localhost:8000/api/artigos`

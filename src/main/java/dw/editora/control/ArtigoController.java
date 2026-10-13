@@ -1,6 +1,10 @@
 package dw.editora.control;
 
 import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,8 @@ import dw.editora.service.ArtigoService;
 @RestController 
 @RequestMapping("/api/artigos") // Mapeia o recurso na raiz da classe
 public class ArtigoController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ArtigoController.class);
 
     // A dependência agora é do Service, não do Repository
     private final ArtigoService service;
@@ -53,11 +59,14 @@ public class ArtigoController {
     }
 
     @PostMapping
-    public ResponseEntity<Artigo> createArtigo(@RequestBody Artigo artigo) {
+    public ResponseEntity<?> createArtigo(@RequestBody Artigo artigo) {
         try {
             Artigo artigoSalvo = service.salvar(artigo);
             return ResponseEntity.status(HttpStatus.CREATED).body(artigoSalvo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         } catch (Exception e) {
+            logger.error("Erro ao criar artigo", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
