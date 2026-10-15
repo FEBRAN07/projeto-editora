@@ -54,6 +54,19 @@ A API de artigos responde em `http://localhost:8000/api/artigos` e permite requi
 | `DELETE`    | `/api/artigos/{id}`       | Exclui um artigo específico pelo ID.                                       |
 | `DELETE`    | `/api/artigos`            | Exclui **todos** os artigos do banco de dados.                             |
 
+### Endpoints de Autores
+
+A API de autores responde em `http://localhost:8000/api/autores`.
+
+| Método HTTP | Endpoint                                      | Descrição                                                                                                                                      |
+| :---------- | :-------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST`      | `/api/autores`                                | Cadastra um novo autor (`400` se o e-mail já estiver cadastrado).                                                                              |
+| `GET`       | `/api/autores`                                | Lista todos os autores.                                                                                                                        |
+| `GET`       | `/api/autores/{id}`                           | Retorna um autor pelo ID (`404` se não existir).                                                                                               |
+| `GET`       | `/api/autores/{id}/artigos`                   | Lista os artigos escritos pelo autor. `200` com a lista, `204` se o autor não tiver artigos e `404` se o autor não existir.                    |
+| `GET`       | `/api/autores/{id}/artigos?apenasPublicados=true` | Igual ao anterior, mas retorna somente os artigos com `publicado = true`.                                                                  |
+| `DELETE`    | `/api/autores/{id}`                           | Exclui um autor pelo ID (e seus artigos).                                                                                                      |
+
 ### Criar um artigo no Postman
 
 Use Body → raw → JSON (`Content-Type: application/json`). Todo artigo precisa de um autor cadastrado.

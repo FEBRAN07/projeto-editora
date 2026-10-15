@@ -1,5 +1,6 @@
 package dw.editora.control;
 
+import dw.editora.entity.Artigo;
 import dw.editora.entity.Autor;
 import dw.editora.service.AutorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/autores")
@@ -37,6 +39,19 @@ public class AutorController {
         return autorService.buscarPorId(id)
                 .map(autor -> ResponseEntity.ok(autor))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/{id}/artigos")
+    public ResponseEntity<List<Artigo>> listarArtigosDoAutor(@PathVariable Long id,
+            @RequestParam(defaultValue = "false") boolean apenasPublicados) {
+        Optional<List<Artigo>> artigos = autorService.buscarArtigosDoAutor(id, apenasPublicados);
+        if (artigos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        if (artigos.get().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(artigos.get());
     }
 
     @DeleteMapping("/{id}")
