@@ -101,7 +101,7 @@ O retorno esperado é **201 Created**. Se o autor estiver ausente, sem ID ou nã
 3.  Crie um banco de dados chamado `editora`. O `application.properties` usa o usuário `postgres` e a senha `elaia`. Se o seu PostgreSQL usar outra porta, usuário ou senha, ajuste `spring.datasource.url`, `spring.datasource.username` e `spring.datasource.password`, ou, sem editar o arquivo, defina as variáveis de ambiente `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME` e `SPRING_DATASOURCE_PASSWORD`.
 4.  Clone este repositório para sua máquina local.
 5.  Pelo terminal, navegue até a pasta raiz do projeto (onde o arquivo `pom.xml` está localizado) e execute:
-```bash
+    ```bash
     # macOS / Linux
     ./mvnw spring-boot:run
 
@@ -110,6 +110,7 @@ O retorno esperado é **201 Created**. Se o autor estiver ausente, sem ID ou nã
 
     # ou, se o Maven estiver instalado
     mvn spring-boot:run
-```
+    ```
+
     Se for executar pelo VS Code, use o terminal: a extensão Java pode exibir erros falsos nas anotações do Lombok (`@AllArgsConstructor`, por exemplo), mas eles não afetam a compilação feita pelo Maven.
 6.  A API estará pronta para receber requisições em: `http://localhost:8000/api/artigos`
